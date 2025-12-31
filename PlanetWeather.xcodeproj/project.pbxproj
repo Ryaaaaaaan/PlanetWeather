@@ -24,6 +24,10 @@
 		C0292939D703AE704B795A63 /* PlanetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC466379B18C43038632E3 /* PlanetDetailView.swift */; };
 		CCC942C1E40B5A414318B1CE /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE154E67B101506A58D93F3 /* LaunchScreenView.swift */; };
 		CEED7789A7FE6B4B5ECF7168 /* PlanetInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134903B4DFA31D461A98CD5 /* PlanetInteractionView.swift */; };
+		D0AADA7C2F05AA720058C497 /* SolarSystemOrreryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AADA7B2F05AA720058C497 /* SolarSystemOrreryView.swift */; };
+		D0AADA7E2F05CD060058C497 /* GestureOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AADA7D2F05CD060058C497 /* GestureOverlay.swift */; };
+		D0AADA802F05D6430058C497 /* PlanetLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AADA7F2F05D6430058C497 /* PlanetLabelView.swift */; };
+		D0AADA822F05DC930058C497 /* PlanetRotationSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AADA812F05DC930058C497 /* PlanetRotationSystem.swift */; };
 		D466DB6845E1C118E532B8CD /* WeatherCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FFF83FB6CD0271C28F6508 /* WeatherCondition.swift */; };
 		D51C0037D9C09EAD05232EDE /* SolarSystemCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9F1913F771E0F5D5C9B932 /* SolarSystemCarouselView.swift */; };
 		D5B92FCFAD40F5DC91F75C1A /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928000E05B43C3812F7C2E8D /* Secrets.swift */; };
@@ -69,6 +73,10 @@
 		B72857AFD0CE4146DDAECE0C /* AtmosphericLimbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtmosphericLimbView.swift; sourceTree = "<group>"; };
 		C27A29CC54988F1C20D54BD1 /* Planet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Planet.swift; sourceTree = "<group>"; };
 		CE9F1913F771E0F5D5C9B932 /* SolarSystemCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemCarouselView.swift; sourceTree = "<group>"; };
+		D0AADA7B2F05AA720058C497 /* SolarSystemOrreryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemOrreryView.swift; sourceTree = "<group>"; };
+		D0AADA7D2F05CD060058C497 /* GestureOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureOverlay.swift; sourceTree = "<group>"; };
+		D0AADA7F2F05D6430058C497 /* PlanetLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetLabelView.swift; sourceTree = "<group>"; };
+		D0AADA812F05DC930058C497 /* PlanetRotationSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetRotationSystem.swift; sourceTree = "<group>"; };
 		D3BCEBCEEB17226B674649D9 /* PlanetRealityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetRealityView.swift; sourceTree = "<group>"; };
 		D4AC466379B18C43038632E3 /* PlanetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetDetailView.swift; sourceTree = "<group>"; };
 		D843659E6501B94287554482 /* LiquidWeatherCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidWeatherCard.swift; sourceTree = "<group>"; };
@@ -100,6 +108,9 @@
 		72246899E009721D21CA5908 /* Reality */ = {
 			isa = PBXGroup;
 			children = (
+				D0AADA812F05DC930058C497 /* PlanetRotationSystem.swift */,
+				D0AADA7D2F05CD060058C497 /* GestureOverlay.swift */,
+				D0AADA7B2F05AA720058C497 /* SolarSystemOrreryView.swift */,
 				B72857AFD0CE4146DDAECE0C /* AtmosphericLimbView.swift */,
 				95726D6B67FC25B884906EE4 /* CosmicNavigationRoot.swift */,
 				1134903B4DFA31D461A98CD5 /* PlanetInteractionView.swift */,
@@ -154,6 +165,7 @@
 		DC94A5026C7EF0BA34C46097 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D0AADA7F2F05D6430058C497 /* PlanetLabelView.swift */,
 				953F5DA75CF081C56555B6E5 /* AtmosphericFluidBackground.swift */,
 				D843659E6501B94287554482 /* LiquidWeatherCard.swift */,
 				865E37977B8860EDA319CCF9 /* PlanetHeroSection.swift */,
@@ -303,16 +315,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0AADA7E2F05CD060058C497 /* GestureOverlay.swift in Sources */,
 				71C55D1577B3E8041EE8CD06 /* AstronomyHelper.swift in Sources */,
 				E4BE944A1514E2583DF9F7E6 /* AtmosphericFluidBackground.swift in Sources */,
 				4217480F71499B17952B6FF7 /* AtmosphericLimbView.swift in Sources */,
+				D0AADA7C2F05AA720058C497 /* SolarSystemOrreryView.swift in Sources */,
 				FC5EA38D17B3C5A650D9EEA6 /* ContentView.swift in Sources */,
+				D0AADA822F05DC930058C497 /* PlanetRotationSystem.swift in Sources */,
 				E3687E6654C010527A179C09 /* CosmicNavigationRoot.swift in Sources */,
 				16F9E1C18A9D530228A1610B /* HapticManager.swift in Sources */,
 				CCC942C1E40B5A414318B1CE /* LaunchScreenView.swift in Sources */,
 				95CCFB522A2E0170383C5B33 /* LiquidWeatherCard.swift in Sources */,
 				273B6A6E2C394F413406BA36 /* LocationManager.swift in Sources */,
 				0642D320ED0EDB474F9538C3 /* Planet.swift in Sources */,
+				D0AADA802F05D6430058C497 /* PlanetLabelView.swift in Sources */,
 				3F140258B0FE8F2D55FEEEAD /* PlanetDataService.swift in Sources */,
 				C0292939D703AE704B795A63 /* PlanetDetailView.swift in Sources */,
 				7884869FD5F42C21693A2F10 /* PlanetHeroSection.swift in Sources */,
@@ -340,13 +356,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A6MP3CDY7Q;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PlanetWeather/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cosmicweather.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdel.cosmicweather.app;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -431,13 +448,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A6MP3CDY7Q;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PlanetWeather/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cosmicweather.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdel.cosmicweather.app;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;

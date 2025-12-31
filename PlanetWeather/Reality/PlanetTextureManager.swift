@@ -13,7 +13,80 @@ final class PlanetTextureManager {
     
     static let shared = PlanetTextureManager()
     
-    private init() {}
+    private init() {
+        // Log all assets at startup
+        logAllAssets()
+    }
+    
+    // MARK: - Diagnostic
+    
+    /// Call this at startup to verify all textures are bundled correctly
+    private func logAllAssets() {
+        print("═══════════════════════════════════════════════════════════")
+        print("🪐 [PlanetTextureManager] ASSET DIAGNOSTIC REPORT")
+        print("═══════════════════════════════════════════════════════════")
+        
+        // List of all expected texture files
+        let expectedTextures: [(name: String, ext: String)] = [
+            ("sun_diffuse", "jpg"),
+            ("mercury_diffuse", "jpg"),
+            ("venus_diffuse", "jpg"),
+            ("venus_atmosphere", "jpg"),
+            ("earth_diffuse", "jpg"),
+            ("mars_diffuse", "jpg"),
+            ("jupiter_diffuse", "jpg"),
+            ("saturn_diffuse", "jpg"),
+            ("saturn_ring", "png"),
+            ("uranus_diffuse", "jpg"),
+            ("neptune_diffuse", "jpg"),
+            ("starmap_background", "jpg")
+        ]
+        
+        var foundCount = 0
+        var missingCount = 0
+        
+        for texture in expectedTextures {
+            let rootURL = Bundle.main.url(forResource: texture.name, withExtension: texture.ext)
+            let texturesURL = Bundle.main.url(forResource: texture.name, withExtension: texture.ext, subdirectory: "Textures")
+            
+            if rootURL != nil || texturesURL != nil {
+                print("✅ FOUND: \(texture.name).\(texture.ext)")
+                if let url = rootURL ?? texturesURL {
+                    print("   📍 Path: \(url.path)")
+                }
+                foundCount += 1
+            } else {
+                print("❌ MISSING: \(texture.name).\(texture.ext)")
+                missingCount += 1
+            }
+        }
+        
+        print("───────────────────────────────────────────────────────────")
+        print("📊 SUMMARY: \(foundCount) found, \(missingCount) missing")
+        print("───────────────────────────────────────────────────────────")
+        
+        // Also list what's actually in the bundle's resource path
+        print("\n📁 Bundle Resource Path: \(Bundle.main.resourcePath ?? "N/A")")
+        if let resourcePath = Bundle.main.resourcePath {
+            do {
+                let contents = try FileManager.default.contentsOfDirectory(atPath: resourcePath)
+                let imageFiles = contents.filter { $0.hasSuffix(".jpg") || $0.hasSuffix(".png") }
+                print("📷 Image files at root (\(imageFiles.count)): \(imageFiles.joined(separator: ", "))")
+                
+                // Check if Textures folder exists
+                let texturesPath = resourcePath + "/Textures"
+                if FileManager.default.fileExists(atPath: texturesPath) {
+                    let textureContents = try FileManager.default.contentsOfDirectory(atPath: texturesPath)
+                    print("📷 Image files in /Textures (\(textureContents.count)): \(textureContents.joined(separator: ", "))")
+                } else {
+                    print("⚠️ /Textures folder does NOT exist in bundle")
+                }
+            } catch {
+                print("🛑 Error reading bundle contents: \(error)")
+            }
+        }
+        print("═══════════════════════════════════════════════════════════\n")
+    }
     
     // MARK: - Planet Colors (Fallback)
     
@@ -126,16 +199,22 @@ final class PlanetTextureManager {
             Bundle.main.url(forResource: filename, withExtension: ext, subdirectory: "Textures")
         ].compactMap { $0 }
         
+        // Debug: Log search results
+        print("🔍 [PlanetTextureManager] Searching for: \(filename).\(ext)")
+        print("   - Root URL: \(Bundle.main.url(forResource: filename, withExtension: ext)?.absoluteString ?? "NOT FOUND")")
+        print("   - Textures URL: \(Bundle.main.url(forResource: filename, withExtension: ext, subdirectory: "Textures")?.absoluteString ?? "NOT FOUND")")
+        
         guard let url = potentialURLs.first else {
-            // Silent fail here, caller handles fallback logging if needed
-            // print("❌ [PlanetTextureManager] File not found in Bundle: \(filename).\(ext)")
+            print("❌ [PlanetTextureManager] File not found in Bundle: \(filename).\(ext)")
             return nil
         }
         
         // 2. Safely load
         do {
             // options: .init(semantic: .color) ensures proper sRGB/Linear handling
-            return try TextureResource.load(contentsOf: url)
+            let texture = try TextureResource.load(contentsOf: url)
+            print("✅ [PlanetTextureManager] Successfully loaded: \(filename).\(ext)")
+            return texture
         } catch {
             print("🛑 [PlanetTextureManager] Failed to load texture at \(url.lastPathComponent): \(error)")
             return nil
