@@ -1,0 +1,8 @@
+.DS_Store
+*.xcodeproj/project.xcworkspace
+*.xcodeproj/xcuserdata
+*/Config/Secrets.swift
+PlanetWeather/Config/Secrets.swift
+Secrets.swift
+.build/
+.swiftpm/
