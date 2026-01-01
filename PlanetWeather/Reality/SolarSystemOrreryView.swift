@@ -104,6 +104,10 @@ struct SolarSystemOrreryView: View {
     @State private var selectedPlanetId: String? = nil
     @State private var focusedPlanetId: String? = nil
     
+    // Navigation State
+    @State private var showPlanetDetail: Bool = false
+    @State private var planetForDetail: Planet? = nil
+    
     // Scene References
     @State private var solarSystemRoot: Entity?
     @State private var planetsMap: [String: Entity] = [:]
@@ -214,6 +218,11 @@ struct SolarSystemOrreryView: View {
             .onDisappear {
                 stopDisplayLink()
             }
+            .fullScreenCover(isPresented: $showPlanetDetail) {
+                if let planet = planetForDetail {
+                    PlanetDetailView(planet: planet)
+                }
+            }
         }
     }
     
@@ -221,10 +230,13 @@ struct SolarSystemOrreryView: View {
     
     private func handleTap(at location: CGPoint, in size: CGSize) {
         if let planetId = findPlanet(at: location, in: size) {
-            selectPlanet(id: planetId)
-        } else {
-            deselectPlanet()
+            // Navigate directly to planet detail view
+            if let planet = PlanetDataService.shared.getPlanet(byId: planetId) {
+                planetForDetail = planet
+                showPlanetDetail = true
+            }
         }
+        // Tap on empty space = do nothing (no deselection needed)
     }
     
     private func handleDoubleTap(at location: CGPoint, in size: CGSize) {
