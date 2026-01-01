@@ -18,6 +18,12 @@
 		B536DB08D08F643EDB84ABE1 /* WeatherSimulationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A6ED0F7BF7A31AFC4A3ADD /* WeatherSimulationEngine.swift */; };
 		C0292939D703AE704B795A63 /* PlanetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC466379B18C43038632E3 /* PlanetDetailView.swift */; };
 		CCC942C1E40B5A414318B1CE /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE154E67B101506A58D93F3 /* LaunchScreenView.swift */; };
+		D01BD0022F064BAF00D3C27C /* HourlyForecastCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01BCFFC2F064BAF00D3C27C /* HourlyForecastCard.swift */; };
+		D01BD0032F064BAF00D3C27C /* PlanetFullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01BCFFE2F064BAF00D3C27C /* PlanetFullView.swift */; };
+		D01BD0042F064BAF00D3C27C /* PlanetHalfSphereView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01BCFFF2F064BAF00D3C27C /* PlanetHalfSphereView.swift */; };
+		D01BD0052F064BAF00D3C27C /* PlanetBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01BCFFD2F064BAF00D3C27C /* PlanetBackground.swift */; };
+		D01BD0062F064BAF00D3C27C /* WeatherInfoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01BD0012F064BAF00D3C27C /* WeatherInfoCard.swift */; };
+		D01BD0072F064BAF00D3C27C /* PlanetWeatherHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01BD0002F064BAF00D3C27C /* PlanetWeatherHeader.swift */; };
 		D0AADA7C2F05AA720058C497 /* SolarSystemOrreryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AADA7B2F05AA720058C497 /* SolarSystemOrreryView.swift */; };
 		D0AADA7E2F05CD060058C497 /* GestureOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AADA7D2F05CD060058C497 /* GestureOverlay.swift */; };
 		D0AADA802F05D6430058C497 /* PlanetLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AADA7F2F05D6430058C497 /* PlanetLabelView.swift */; };
@@ -60,6 +66,12 @@
 		9720F44C7A6B204D66100BC4 /* SpaceWeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceWeatherManager.swift; sourceTree = "<group>"; };
 		99CFA9096393479BC26F6B72 /* PlanetWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlanetWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C27A29CC54988F1C20D54BD1 /* Planet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Planet.swift; sourceTree = "<group>"; };
+		D01BCFFC2F064BAF00D3C27C /* HourlyForecastCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastCard.swift; sourceTree = "<group>"; };
+		D01BCFFD2F064BAF00D3C27C /* PlanetBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetBackground.swift; sourceTree = "<group>"; };
+		D01BCFFE2F064BAF00D3C27C /* PlanetFullView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetFullView.swift; sourceTree = "<group>"; };
+		D01BCFFF2F064BAF00D3C27C /* PlanetHalfSphereView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetHalfSphereView.swift; sourceTree = "<group>"; };
+		D01BD0002F064BAF00D3C27C /* PlanetWeatherHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetWeatherHeader.swift; sourceTree = "<group>"; };
+		D01BD0012F064BAF00D3C27C /* WeatherInfoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfoCard.swift; sourceTree = "<group>"; };
 		D0AADA7B2F05AA720058C497 /* SolarSystemOrreryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSystemOrreryView.swift; sourceTree = "<group>"; };
 		D0AADA7D2F05CD060058C497 /* GestureOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureOverlay.swift; sourceTree = "<group>"; };
 		D0AADA7F2F05D6430058C497 /* PlanetLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetLabelView.swift; sourceTree = "<group>"; };
@@ -136,12 +148,12 @@
 		CBD8F0797F93F43AB79AFFF5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D01BCFFA2F06345F00D3C27C /* PlanetFullView.swift */,
-				D01BCFDE2F062AE900D3C27C /* HourlyForecastCard.swift */,
-				D01BCFDF2F062AE900D3C27C /* PlanetBackground.swift */,
-				D01BCFE02F062AE900D3C27C /* PlanetHalfSphereView.swift */,
-				D01BCFE12F062AE900D3C27C /* PlanetWeatherHeader.swift */,
-				D01BCFE22F062AE900D3C27C /* WeatherInfoCard.swift */,
+				D01BCFFC2F064BAF00D3C27C /* HourlyForecastCard.swift */,
+				D01BCFFD2F064BAF00D3C27C /* PlanetBackground.swift */,
+				D01BCFFE2F064BAF00D3C27C /* PlanetFullView.swift */,
+				D01BCFFF2F064BAF00D3C27C /* PlanetHalfSphereView.swift */,
+				D01BD0002F064BAF00D3C27C /* PlanetWeatherHeader.swift */,
+				D01BD0012F064BAF00D3C27C /* WeatherInfoCard.swift */,
 				ED55A48142625C480CDD51C1 /* ContentView.swift */,
 				2DE154E67B101506A58D93F3 /* LaunchScreenView.swift */,
 				D4AC466379B18C43038632E3 /* PlanetDetailView.swift */,
@@ -306,6 +318,12 @@
 				FC5EA38D17B3C5A650D9EEA6 /* ContentView.swift in Sources */,
 				D0AADA822F05DC930058C497 /* PlanetRotationSystem.swift in Sources */,
 				E3687E6654C010527A179C09 /* CosmicNavigationRoot.swift in Sources */,
+				D01BD0022F064BAF00D3C27C /* HourlyForecastCard.swift in Sources */,
+				D01BD0032F064BAF00D3C27C /* PlanetFullView.swift in Sources */,
+				D01BD0042F064BAF00D3C27C /* PlanetHalfSphereView.swift in Sources */,
+				D01BD0052F064BAF00D3C27C /* PlanetBackground.swift in Sources */,
+				D01BD0062F064BAF00D3C27C /* WeatherInfoCard.swift in Sources */,
+				D01BD0072F064BAF00D3C27C /* PlanetWeatherHeader.swift in Sources */,
 				D0AADA902F061EBE0058C497 /* PlanetWeatherData.swift in Sources */,
 				16F9E1C18A9D530228A1610B /* HapticManager.swift in Sources */,
 				CCC942C1E40B5A414318B1CE /* LaunchScreenView.swift in Sources */,
