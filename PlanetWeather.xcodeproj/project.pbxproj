@@ -336,14 +336,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = A6MP3CDY7Q;
+				DEVELOPMENT_TEAM = Q4S29PLBC5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PlanetWeather/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdel.cosmicweather.app;
+				PRODUCT_BUNDLE_IDENTIFIER = iddebindlewesh;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -428,14 +428,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = A6MP3CDY7Q;
+				DEVELOPMENT_TEAM = Q4S29PLBC5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PlanetWeather/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdel.cosmicweather.app;
+				PRODUCT_BUNDLE_IDENTIFIER = iddebindlewesh;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -2,6 +2,57 @@ import SwiftUI
 import RealityKit
 import UIKit
 
+// MARK: - Orbital Mechanics Calculator
+
+/// Utility for calculating planetary positions based on Keplerian orbital mechanics.
+/// Uses simplified circular orbits for aesthetic "Orrery" visualization.
+struct OrbitalMechanics {
+    
+    /// J2000 Epoch: January 1, 2000, 12:00 TT
+    static let j2000: Date = {
+        var components = DateComponents()
+        components.year = 2000
+        components.month = 1
+        components.day = 1
+        components.hour = 12
+        components.timeZone = TimeZone(identifier: "UTC")
+        return Calendar(identifier: .gregorian).date(from: components)!
+    }()
+    
+    private static let secondsPerDay: Double = 86400.0
+    
+    /// Calculate the 3D position of a planet at a given date.
+    static func position(for planet: Planet, at date: Date, visualRadius: Float) -> SIMD3<Float> {
+        let daysElapsed = date.timeIntervalSince(j2000) / secondsPerDay
+        
+        guard planet.orbitalPeriod > 0 else { return .zero }
+        
+        let orbitsCompleted = daysElapsed / planet.orbitalPeriod
+        let currentAngleDegrees = planet.initialLongitude + (orbitsCompleted * 360.0)
+        let angleRadians = currentAngleDegrees * .pi / 180.0
+        
+        let x = Float(cos(angleRadians)) * visualRadius
+        let z = Float(sin(angleRadians)) * visualRadius
+        
+        return SIMD3<Float>(x, 0, z)
+    }
+    
+    /// Calculate the rotation angle (spin) for a planet at a given date.
+    static func spinAngle(for planet: Planet, at date: Date) -> Float {
+        let daysElapsed = date.timeIntervalSince(j2000) / secondsPerDay
+        let rotationPeriodDays = planet.rotationPeriod / 24.0
+        
+        guard abs(rotationPeriodDays) > 0 else { return 0 }
+        
+        let direction: Double = rotationPeriodDays >= 0 ? 1.0 : -1.0
+        let rotationsCompleted = daysElapsed / abs(rotationPeriodDays)
+        let angleRadians = rotationsCompleted * 2.0 * .pi * direction
+        
+        return Float(angleRadians.truncatingRemainder(dividingBy: 2.0 * .pi))
+    }
+}
+
+
 // MARK: - Camera Controller (Orbital + Inverse Transform)
 @MainActor
 final class CameraController: ObservableObject {
@@ -82,6 +133,46 @@ final class CameraController: ObservableObject {
         targetTheta = Float.pi / 4
     }
     
+    /// Cinematic "Limb Shot" focus - UNIFORM APPARENT SIZE for all planets
+    /// Using Sun as reference: all planets appear the same size as Sun does
+    /// - Parameters:
+    ///   - planetPosition: Current world position of the planet
+    ///   - planetRadius: Visual radius of the planet
+    func cinematicFocus(on planetPosition: SIMD3<Float>, planetRadius: Float) {
+        // REFERENCE: Sun looks perfect at this configuration
+        // Sun radius = 5.0 * 0.6 = 3.0
+        // Sun appears great at distance ~5.0
+        let sunRadius: Float = 3.0
+        let sunIdealDistance: Float = 5.0
+        
+        // Scale camera distance proportionally to maintain same apparent size
+        // distance / radius = constant (sunIdealDistance / sunRadius)
+        let cameraDistance = planetRadius * (sunIdealDistance / sunRadius)
+        
+        // Horizontal offset to put planet on LEFT of screen (proportional to distance)
+        let horizontalOffset = cameraDistance * 0.25
+        
+        // Slight elevation for cinematic composition
+        let verticalOffset = cameraDistance * 0.08
+        
+        // Camera focus center (offset from planet)
+        targetFocusCenter = planetPosition + SIMD3<Float>(horizontalOffset, verticalOffset, 0)
+        
+        // Set viewing distance
+        targetRadius = cameraDistance
+        
+        // Camera angles for dramatic composition
+        targetPhi = 0.04
+        targetTheta = Float.pi / 12
+        
+        print("📷 Camera: radius=\(planetRadius), distance=\(cameraDistance)")
+    }
+    
+    /// Check if camera is in detail mode (close to a planet)
+    var isInDetailMode: Bool {
+        return targetRadius < 50.0
+    }
+    
     // MARK: - Update
     func updateInterpolation() {
         let t = interpolationSpeed
@@ -96,6 +187,8 @@ final class CameraController: ObservableObject {
 struct SolarSystemOrreryView: View {
     
     @Binding var selectedPlanet: Planet?
+    @Binding var currentDate: Date
+    var onFocusPlanet: ((String) -> Void)? = nil
     
     @StateObject private var cameraController = CameraController()
     @StateObject private var rotationSystem = PlanetRotationSystem()
@@ -151,11 +244,11 @@ struct SolarSystemOrreryView: View {
                         let ring = createOrbitRing(radius: params.orbitRadius)
                         root.addChild(ring)
                         
-                        let angle = Float.random(in: 0...(2 * .pi))
-                        let pos: SIMD3<Float> = [cos(angle)*params.orbitRadius, 0, sin(angle)*params.orbitRadius]
+                        // Use OrbitalMechanics for initial position (based on current date)
+                        let initialPos = OrbitalMechanics.position(for: planet, at: Date(), visualRadius: params.orbitRadius)
                         
                         if let planetEntity = createPlanetEntity(for: planet, scale: params.scale) {
-                            planetEntity.position = pos
+                            planetEntity.position = initialPos
                             addCollision(to: planetEntity, radius: 0.6 * params.scale)
                             root.addChild(planetEntity)
                             planetsMap[planet.id] = planetEntity
@@ -223,6 +316,30 @@ struct SolarSystemOrreryView: View {
                     PlanetDetailView(planet: planet)
                 }
             }
+            .onChange(of: selectedPlanet) { oldValue, newValue in
+                if let newPlanet = newValue {
+                    // Planet changed (via swipe or tap) -> Fly camera to new planet
+                    if let entity = planetsMap[newPlanet.id] {
+                        // Use visualBounds for accurate radius (accounts for scale)
+                        let visualBounds = entity.visualBounds(relativeTo: entity)
+                        let visualRadius = max(visualBounds.extents.x, visualBounds.extents.y, visualBounds.extents.z) / 2.0
+                        
+                        // Fallback to stored radius if visualBounds fails
+                        let planetRadius = visualRadius > 0.01 ? visualRadius : (planetRadii[newPlanet.id] ?? 1.0)
+                        
+                        focusedPlanetId = newPlanet.id
+                        selectedPlanetId = newPlanet.id
+                        cameraController.cinematicFocus(on: entity.position, planetRadius: planetRadius)
+                        print("🎬 Camera flying to: \(newPlanet.name) (radius: \(planetRadius))")
+                    }
+                } else if oldValue != nil {
+                    // Planet deselected -> Reset camera to system view
+                    focusedPlanetId = nil
+                    selectedPlanetId = nil
+                    cameraController.resetSystem()
+                    print("📹 Camera reset to system view")
+                }
+            }
         }
     }
     
@@ -230,10 +347,23 @@ struct SolarSystemOrreryView: View {
     
     private func handleTap(at location: CGPoint, in size: CGSize) {
         if let planetId = findPlanet(at: location, in: size) {
-            // Navigate directly to planet detail view
-            if let planet = PlanetDataService.shared.getPlanet(byId: planetId) {
-                planetForDetail = planet
-                showPlanetDetail = true
+            // Cinematic focus on tapped planet
+            if let planet = PlanetDataService.shared.getPlanet(byId: planetId),
+               let entity = planetsMap[planetId] {
+                
+                // Update binding for weather overlay
+                selectedPlanet = planet
+                selectedPlanetId = planetId
+                focusedPlanetId = planetId
+                
+                // Trigger cinematic camera transition
+                let planetRadius = planetRadii[planetId] ?? 1.0
+                cameraController.cinematicFocus(on: entity.position, planetRadius: planetRadius)
+                
+                // Haptic feedback
+                triggerSelectionHaptic()
+                
+                print("🎬 Cinematic focus on: \(planet.name)")
             }
         }
         // Tap on empty space = do nothing (no deselection needed)
@@ -286,7 +416,7 @@ struct SolarSystemOrreryView: View {
             
             // Ray-sphere intersection
             let planetRadius = planetRadii[planetId] ?? 1.0
-            let hitRadius = planetRadius * 2.5 // Larger hit area for easier selection
+            let hitRadius = planetRadius * 5.0 // Much larger hit area for easier selection
             
             // Vector from camera to planet center
             let toCenter = planetLocalPos - cameraPos
@@ -382,8 +512,12 @@ struct SolarSystemOrreryView: View {
     // MARK: - Collision for Ray-casting
     
     private func addCollision(to entity: Entity, radius: Float) {
-        let shape = ShapeResource.generateSphere(radius: radius * 1.5)
+        // Generate larger sphere for easier tap detection
+        let shape = ShapeResource.generateSphere(radius: radius * 3.0)
         entity.components.set(CollisionComponent(shapes: [shape]))
+        
+        // Add InputTargetComponent for spatial tap gesture support
+        entity.components.set(InputTargetComponent())
     }
     
     // MARK: - Haptic Feedback
@@ -396,14 +530,42 @@ struct SolarSystemOrreryView: View {
     // MARK: - Display Link
     
     private func startDisplayLink() {
-        displayLink = Timer.scheduledTimer(withTimeInterval: 1/60.0, repeats: true) { _ in
+        displayLink = Timer.scheduledTimer(withTimeInterval: 1/120.0, repeats: true) { _ in
+            // Use bound currentDate for time travel support
+            let animationDate = currentDate
+            
             cameraController.updateInterpolation()
             
             if let root = solarSystemRoot {
                 root.transform = cameraController.inverseCameraTransform
             }
             
-            // Update planet rotations
+            // Update planet positions using OrbitalMechanics
+            for planet in PlanetDataService.shared.getAllPlanets() where planet.id != "sun" {
+                if let entity = planetsMap[planet.id] {
+                    let params = getVisualParameters(for: planet)
+                    let newPos = OrbitalMechanics.position(for: planet, at: animationDate, visualRadius: params.orbitRadius)
+                    entity.position = newPos
+                    
+                    // Apply spin rotation (rotate surface child)
+                    if let surface = entity.children.first(where: { $0.name == "Surface" }) {
+                        let spinAngle = OrbitalMechanics.spinAngle(for: planet, at: animationDate)
+                        surface.transform.rotation = simd_quatf(angle: spinAngle, axis: SIMD3<Float>(0, 1, 0))
+                    }
+                }
+            }
+            
+            // Follow focused planet with camera (Limb Shot tracking)
+            if let focusId = focusedPlanetId,
+               let focusedEntity = planetsMap[focusId] {
+                // Use visualBounds for accurate radius
+                let visualBounds = focusedEntity.visualBounds(relativeTo: focusedEntity)
+                let visualRadius = max(visualBounds.extents.x, visualBounds.extents.y, visualBounds.extents.z) / 2.0
+                let planetRadius = visualRadius > 0.01 ? visualRadius : (planetRadii[focusId] ?? 1.0)
+                cameraController.cinematicFocus(on: focusedEntity.position, planetRadius: planetRadius)
+            }
+            
+            // Update planet rotations (additional system if any)
             rotationSystem.update()
             
             // Update label position if planet is selected

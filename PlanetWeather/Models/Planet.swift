@@ -156,3 +156,75 @@ extension Planet {
         }
     }
 }
+
+// MARK: - Orbital Mechanics Data
+
+extension Planet {
+    /// Orbital period in Earth days
+    var orbitalPeriod: Double {
+        switch id {
+        case "sun": return 0 // Sun doesn't orbit
+        case "mercury": return 87.97
+        case "venus": return 224.7
+        case "earth": return 365.25
+        case "mars": return 687.0
+        case "jupiter": return 4333.0
+        case "saturn": return 10759.0
+        case "uranus": return 30685.0
+        case "neptune": return 60190.0
+        case "pluto": return 90560.0
+        default: return 365.25
+        }
+    }
+    
+    /// Initial longitude at J2000 epoch (degrees) - spread for visual variety
+    var initialLongitude: Double {
+        switch id {
+        case "sun": return 0
+        case "mercury": return 252.25
+        case "venus": return 181.98
+        case "earth": return 100.46
+        case "mars": return 355.45
+        case "jupiter": return 34.40
+        case "saturn": return 49.94
+        case "uranus": return 313.23
+        case "neptune": return 304.88
+        case "pluto": return 238.93
+        default: return 0
+        }
+    }
+    
+    /// Sidereal rotation period in hours (negative = retrograde)
+    var rotationPeriod: Double {
+        switch id {
+        case "sun": return 609.12 // ~25.4 days at equator
+        case "mercury": return 1407.6
+        case "venus": return -5832.5 // Retrograde
+        case "earth": return 23.93
+        case "mars": return 24.62
+        case "jupiter": return 9.93
+        case "saturn": return 10.66
+        case "uranus": return -17.24 // Retrograde
+        case "neptune": return 16.11
+        case "pluto": return -153.3 // Retrograde
+        default: return 24.0
+        }
+    }
+    
+    /// Visual orbital radius for Orrery display (cinematic scale)
+    var visualOrbitalRadius: Float {
+        switch id {
+        case "sun": return 0
+        case "mercury": return 12.0
+        case "venus": return 18.0
+        case "earth": return 24.0
+        case "mars": return 30.0
+        case "jupiter": return 45.0
+        case "saturn": return 60.0
+        case "uranus": return 72.0
+        case "neptune": return 84.0
+        case "pluto": return 95.0
+        default: return 100.0
+        }
+    }
+}
